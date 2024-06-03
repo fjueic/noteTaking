@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script>
+      function scroll() {
+        let emptyTag = document.getElementById("empty-tag-for-scroll");
+        let eleRect = emptyTag.getBoundingClientRect();
+        let windowHeight = window.innerHeight;
+        let eleTop = eleRect.top + window.pageYOffset;
+        let scroll = eleTop - (windowHeight - eleRect.height) / 2;
+        window.scrollTo(0, scroll);
+      }
+      var socket = io("http://localhost:9876");
+      socket.on("html", function (data) {
+        document.getElementById("content").innerHTML = data;
+        scroll();
+      });
+
+      socket.on("error", console.error.bind(console));
+      socket.on("message", console.log.bind(console));
+    </script>
+    <style>
+      img {
+        width: 100vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+  </body>
+</html>
